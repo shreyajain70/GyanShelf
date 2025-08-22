@@ -1,0 +1,59 @@
+const mongoose = require('mongoose');
+const validator = require('validator');
+
+
+const UserSchema = mongoose.Schema({
+    Title: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    Description: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    Class: {
+        type: String,
+        required: true,
+    },
+    Board: {
+        type: String,
+        required: true
+    },
+    Edition: {
+        type: String,
+        required: true
+    },
+    FrontImage: [
+        {
+            type: String,
+            required: true
+        }
+    ]
+    ,
+       BackImage: [
+        {
+            type: String,
+            required: true
+        }
+    ],
+    MRP: {
+        type: Number,
+        required: true,
+        trim: true
+    },
+    Quality:{
+        type: String,
+        required:true
+    },
+    IAgree:{
+        type: String,
+        required:true
+    }
+
+
+}, { timestamps: true })
+
+const SellSchema = mongoose.model("SellSchema", UserSchema);
+module.exports = SellSchema;
