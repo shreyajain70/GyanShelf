@@ -20,12 +20,16 @@ const LoginRoute = require("./routes/LoginRoute");
 const dashboardRoutes = require("./routes/DashboardGetUserDetails");
 const SellPageRoute = require("./routes/SellPageRoute");
 const GetBookCards = require("./routes/GetBookCards");
+const UpdateProfile = require("./routes/UpdateProfile")
+
 
 App.use("/SignUp", SignUpRoute);
 App.use("/Login", LoginRoute);
 App.use("/Dashboard", dashboardRoutes);
 App.use("/Sell", SellPageRoute); // ✅ contains user/:userId route
 App.use("/PostedBooks", GetBookCards);
+
+App.use("/UpdateProfile",UpdateProfile)
 
 // Database + Server
 ConnectDB().then(() => {
