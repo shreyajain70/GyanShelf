@@ -14,6 +14,10 @@ router.post("/", async (req, res) => {
         console.log("User Registered");
         res.send("Post request received")
 
+        if (loading) return;
+        setLoading(true);
+
+
     }
     catch (err) {
         // res.status(400).send(err.message);
