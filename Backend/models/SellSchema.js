@@ -50,11 +50,12 @@ const UserSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    userId: {
-      type: mongoose.Schema.Types.ObjectId, // link to user who uploaded
-      ref: "User",
-      required: true,
-    },
+   userId: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "SignUpGyanShelf", // MUST match the model name in SignUpSchema.js
+  required: true
+}
+,
   },
   { timestamps: true }
 );

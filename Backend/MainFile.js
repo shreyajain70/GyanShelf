@@ -22,6 +22,8 @@ const SellPageRoute = require("./routes/SellPageRoute");
 const GetBookCards = require("./routes/GetBookCards");
 const UpdateProfile = require("./routes/UpdateProfile")
 const BookDetailsRoute = require("./routes/BookDetailsRoute")
+const CartRoute = require("./routes/AddtoCart")
+const BooksPostedRoute = require("./routes/BooksPosted")
 
 App.use("/SignUp", SignUpRoute);
 App.use("/Login", LoginRoute);
@@ -30,6 +32,9 @@ App.use("/Sell", SellPageRoute);
 App.use("/PostedBooks", GetBookCards);
 App.use("/UpdateProfile", UpdateProfile);
 App.use("/books", BookDetailsRoute);
+App.use("/AddToCart", CartRoute)
+App.use("/BooksPosted",BooksPostedRoute)
+
 
 // Database + Server
 ConnectDB().then(() => {
