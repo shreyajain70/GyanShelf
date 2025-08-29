@@ -1,39 +1,61 @@
 const express = require("express");
-const router = express.Router();
-const SignUpSchema = require("../models/SignUpSchema");
+const bcrypt = require("bcrypt");
+const SignUpSchema = require("../models/SignUpSchema"); // ✅ use same schema as signup/login
 
-// ✅ Get user details by ID
+const router = express.Router();
+
+// ✅ Get user profile
 router.get("/:id", async (req, res) => {
   try {
     const user = await SignUpSchema.findById(req.params.id).select("-Password");
     if (!user) return res.status(404).json({ error: "User not found" });
     res.json(user);
   } catch (err) {
-    console.error("❌ Error fetching user:", err.message);
-    res.status(500).json({ error: "Failed to fetch user" });
+    console.error("❌ Error fetching user:", err);
+    res.status(500).json({ error: "Server error" });
   }
 });
 
-// ✅ Update user profile
+// ✅ Update profile
 router.put("/:id", async (req, res) => {
   try {
     const updatedUser = await SignUpSchema.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true, runValidators: true }
+      { new: true }
     ).select("-Password");
 
-    if (!updatedUser) {
-      return res.status(404).json({ error: "User not found" });
+    if (!updatedUser) return res.status(404).json({ error: "User not found" });
+    res.json({ user: updatedUser });
+  } catch (err) {
+    console.error("❌ Error updating profile:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ✅ Update password
+router.put("/:id/password", async (req, res) => {
+  try {
+    const { newPassword } = req.body;
+
+    if (!newPassword) {
+      return res.status(400).json({ error: "New password is required" });
     }
 
-    res.json({
-      message: "User updated successfully",
-      user: updatedUser,
-    });
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    const updatedUser = await SignUpSchema.findByIdAndUpdate(
+      req.params.id,
+      { Password: hashedPassword },
+      { new: true }
+    );
+
+    if (!updatedUser) return res.status(404).json({ error: "User not found" });
+
+    res.json({ message: "✅ Password updated successfully" });
   } catch (err) {
-    console.error("❌ Update error:", err.message);
-    res.status(500).json({ error: "Failed to update user", details: err.message });
+    console.error("❌ Error updating password:", err);
+    res.status(500).json({ error: "Server error" });
   }
 });
 
